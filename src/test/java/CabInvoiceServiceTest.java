@@ -73,4 +73,19 @@ public class CabInvoiceServiceTest {
         InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
         Assert.assertEquals(35, summary.averageFare,0.0);
     }
+
+    //  TEST CASES FOR INVOICE SERVICE
+    @Test
+    public void givenUserIdAndRides_WhenInvoiceGenerator_ShouldReturnInvoiceServiceSummary() {
+        String userId = "hell0";
+        Ride[] rides = {
+                new Ride(2.5, 5),
+                new Ride(2.5, 10),
+                new Ride(3.5, 15)
+        };
+        calculateFare.addRides(userId,rides);
+        InvoiceSummary summary = calculateFare.getInvoiceSummary(userId);
+        InvoiceSummary expectedSummary = new InvoiceSummary(3,115);
+        Assert.assertEquals(expectedSummary,summary);
+    }
 }
