@@ -28,4 +28,16 @@ public class CabInvoiceServiceTest {
         double totalFare = calculateFare.calculateTotalFare(distance, time);
         Assert.assertEquals(5, totalFare,0.0);
     }
+
+    //  TEST CASE FOR MULTIPLE NORMAL RIDE FARES
+    @Test
+    public void givenDistanceAndTime_WhenInvoiceGenerator_ShouldReturnMultipleJourneyFare() {
+
+        Ride[] rides = {
+                new Ride(2.0, 5),
+                new Ride(0.1, 1)
+        };
+        double totalFare = calculateFare.calculateTotalFare(rides);
+        Assert.assertEquals(30, totalFare, 0.0);
+    }
 }

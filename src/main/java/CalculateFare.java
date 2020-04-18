@@ -2,6 +2,7 @@ public class CalculateFare {
     private static final int COST_PER_KILOMETER = 10;
     private static final int COST_PER_MINUTE = 1;
     private static final int MINIMUM_FARE = 5;
+    private double totalFare;
 
     //  DEFAULT CONSTRUCTOR
     public CalculateFare() {
@@ -14,5 +15,12 @@ public class CalculateFare {
             return MINIMUM_FARE;
         }
         return totalRideFare;
+    }
+
+    //  METHOD TO CALCULATE MINIMUM FARE FOR MULTIPLE NORMAL RIDES
+    public double calculateTotalFare(Ride[] rides) {
+        for (Ride ride : rides)
+            totalFare += this.calculateTotalFare(ride.distance, ride.time);
+        return totalFare;
     }
 }
