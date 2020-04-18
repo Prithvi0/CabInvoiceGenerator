@@ -1,12 +1,28 @@
 public class CalculateFare {
-    private static final int COST_PER_KILOMETER = 10;
-    private static final int COST_PER_MINUTE = 1;
-    private static final int MINIMUM_FARE = 5;
+    private double COST_PER_KILOMETER;
+    private int COST_PER_MINUTE;
+    private double MINIMUM_FARE;
     private RideRepository rideRepository = new RideRepository();
 
-    //  DEFAULT CONSTRUCTOR
-    public CalculateFare() {
+    //  ENUM FOR RIDE TYPES
+    public enum RideType {NORMAL, PREMIUM}
+
+    // COSTS OF RIDE TYPES
+    public CalculateFare(CalculateFare.RideType rideType) {
+        if (rideType.equals(RideType.NORMAL)) {
+            this.COST_PER_KILOMETER = 10;
+            this.COST_PER_MINUTE = 1;
+            this.MINIMUM_FARE = 5;
+        }
+        if (rideType.equals(RideType.PREMIUM)) {
+            this.COST_PER_KILOMETER = 15;
+            this.COST_PER_MINUTE = 2;
+            this.MINIMUM_FARE = 20;
+        }
     }
+
+    //  DEFAULT CONSTRUCTOR
+    public CalculateFare() { }
 
     //  METHOD TO CALCULATE MINIMUM FARE FOR NORMAL RIDE
     public double calculateTotalFare(double distance, int time) {

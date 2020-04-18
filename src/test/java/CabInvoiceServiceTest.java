@@ -3,89 +3,106 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class CabInvoiceServiceTest {
-    //  OBJECT TO ACCESS THROUGHOUT THE PROGRAM
-    CalculateFare calculateFare;
+    //  OBJECT TO ACCESS NORMAL AND PREMIUM RIDES
+    CalculateFare calculateNormalRideFare;
+    CalculateFare calculatePremiumRideFare;
 
-    //   METHOD TO RUN BEFORE THE TEST CASES
+    //  METHOD TO RUN BEFORE THE TEST CASES FOR NORMAL AND PREMIUM RIDES
     @Before
     public void cabInvoiceService() {
-            calculateFare = new CalculateFare();
-        }
+        calculateNormalRideFare = new CalculateFare(CalculateFare.RideType.NORMAL);
+        calculatePremiumRideFare = new CalculateFare(CalculateFare.RideType.PREMIUM);
+    }
 
     //  TEST CASES FOR NORMAL RIDE FARES
     @Test
-    public void givenDistanceAndTime_WhenInvoiceGenerator_ShouldReturnTotalJourneyFare() {
+    public void givenDistanceAndTimeForNormalRide_WhenInvoiceGenerator_ShouldReturnTotalJourneyFare() {
         double distance = 2.0;
         int time = 5;
-        double totalFare = calculateFare.calculateTotalFare(distance, time);
+        double totalFare = calculateNormalRideFare.calculateTotalFare(distance, time);
         Assert.assertEquals(25, totalFare, 0.0);
     }
 
     @Test
-    public void givenDistanceAndTime_WhenInvoiceGenerator_ShouldReturnMinimumJourneyFare() {
+    public void givenDistanceAndTimeForNormalRide_WhenInvoiceGenerator_ShouldReturnMinimumJourneyFare() {
         double distance = 0.1;
         int time = 1;
-        double totalFare = calculateFare.calculateTotalFare(distance, time);
+        double totalFare = calculateNormalRideFare.calculateTotalFare(distance, time);
         Assert.assertEquals(5, totalFare,0.0);
     }
 
     //  TEST CASE FOR MULTIPLE NORMAL RIDE FARES
     @Test
-    public void givenDistanceAndTime_WhenInvoiceGenerator_ShouldReturnMultipleJourneyFare() {
+    public void givenDistanceAndTimeForNormalRides_WhenInvoiceGenerator_ShouldReturnMultipleJourneyFare() {
 
         Ride[] rides = {
                 new Ride(2.0, 5),
                 new Ride(0.1, 1)
         };
         //  USING ENHANCED INVOICE GENERATOR
-        InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
+        InvoiceSummary summary = calculateNormalRideFare.calculateTotalFare(rides);
         InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30);
         Assert.assertEquals(summary, expectedInvoiceSummary);
     }
 
-    //  TEST CASES USING ENHANCED INVOICE GENERATOR
+    //  TEST CASES USING ENHANCED INVOICE GENERATOR FOR NORMAL RIDES
     @Test
-    public void givenMultipleRides_WhenInvoiceGenerator_ShouldReturnTotalRides() {
+    public void givenMultipleNormalRides_WhenInvoiceGenerator_ShouldReturnTotalRides() {
         Ride[] rides = {
                 new Ride(1.0, 3),
                 new Ride(2.0, 2),
                 new Ride(3.0, 1)
         };
-        InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
+        InvoiceSummary summary = calculateNormalRideFare.calculateTotalFare(rides);
         Assert.assertEquals(3, summary.totalRides, 0.0);
     }
 
     @Test
-    public void givenMultipleRides_WhenInvoiceGenerator_ShouldReturnTotalFare() {
+    public void givenMultipleNormalRides_WhenInvoiceGenerator_ShouldReturnTotalFare() {
         Ride[] rides = {new Ride(1.0, 2),
                 new Ride(2.0, 3)};
-        InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
+        InvoiceSummary summary = calculateNormalRideFare.calculateTotalFare(rides);
         Assert.assertEquals(35, summary.totalFare, 0.0);
     }
 
     @Test
-    public void givenMultipleRides_WhenInvoiceGenerator_ShouldReturnAverageFare() {
+    public void givenMultipleNormalRides_WhenInvoiceGenerator_ShouldReturnAverageFare() {
         Ride[] rides = {
                 new Ride(2.0, 5),
                 new Ride(4.0, 10),
                 new Ride(2.0, 10)
         };
-        InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
+        InvoiceSummary summary = calculateNormalRideFare.calculateTotalFare(rides);
         Assert.assertEquals(35, summary.averageFare,0.0);
     }
 
-    //  TEST CASES FOR INVOICE SERVICE
+    //  TEST CASES FOR INVOICE SERVICE (NORMAL RIDES)
     @Test
-    public void givenUserIdAndRides_WhenInvoiceGenerator_ShouldReturnInvoiceServiceSummary() {
+    public void givenUserIdAndNormalRides_WhenInvoiceGenerator_ShouldReturnInvoiceServiceSummary() {
         String userId = "hell0";
         Ride[] rides = {
                 new Ride(2.5, 5),
                 new Ride(2.5, 10),
                 new Ride(3.5, 15)
         };
-        calculateFare.addRides(userId,rides);
-        InvoiceSummary summary = calculateFare.getInvoiceSummary(userId);
+        calculateNormalRideFare.addRides(userId,rides);
+        InvoiceSummary summary = calculateNormalRideFare.getInvoiceSummary(userId);
         InvoiceSummary expectedSummary = new InvoiceSummary(3,115);
         Assert.assertEquals(expectedSummary,summary);
+    }
+
+    //  TEST CASES FOR INVOICE SERVICE (NORMAL RIDES)
+    @Test
+    public void givenPremiumRides_WhenInvoiceGenerator_ShouldReturnInvoiceServiceSummary() {
+        String userId = "w0r1d";
+        Ride[] rides = {
+                new Ride(2.5, 5),
+                new Ride(2.50, 10),
+                new Ride(3.5, 15)
+        };
+        calculatePremiumRideFare.addRides(userId, rides);
+        InvoiceSummary summary = calculatePremiumRideFare.getInvoiceSummary(userId);
+        InvoiceSummary expectedSummary = new InvoiceSummary(3, 187.5);
+        Assert.assertEquals(expectedSummary, summary);
     }
 }
