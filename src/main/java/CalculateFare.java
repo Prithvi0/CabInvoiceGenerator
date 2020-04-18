@@ -18,9 +18,9 @@ public class CalculateFare {
     }
 
     //  METHOD TO CALCULATE MINIMUM FARE FOR MULTIPLE NORMAL RIDES
-    public double calculateTotalFare(Ride[] rides) {
+    public InvoiceSummary calculateTotalFare(Ride[] rides) {
         for (Ride ride : rides)
             totalFare += this.calculateTotalFare(ride.distance, ride.time);
-        return totalFare;
+        return new InvoiceSummary(rides.length, totalFare);
     }
 }

@@ -37,7 +37,40 @@ public class CabInvoiceServiceTest {
                 new Ride(2.0, 5),
                 new Ride(0.1, 1)
         };
-        double totalFare = calculateFare.calculateTotalFare(rides);
-        Assert.assertEquals(30, totalFare, 0.0);
+        //  USING ENHANCED INVOICE GENERATOR
+        InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
+        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30);
+        Assert.assertEquals(summary, expectedInvoiceSummary);
+    }
+
+    //  TEST CASES USING ENHANCED INVOICE GENERATOR
+    @Test
+    public void givenMultipleRides_WhenInvoiceGenerator_ShouldReturnTotalRides() {
+        Ride[] rides = {
+                new Ride(1.0, 3),
+                new Ride(2.0, 2),
+                new Ride(3.0, 1)
+        };
+        InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
+        Assert.assertEquals(3, summary.totalRides, 0.0);
+    }
+
+    @Test
+    public void givenMultipleRides_WhenInvoiceGenerator_ShouldReturnTotalFare() {
+        Ride[] rides = {new Ride(1.0, 2),
+                new Ride(2.0, 3)};
+        InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
+        Assert.assertEquals(35, summary.totalFare, 0.0);
+    }
+
+    @Test
+    public void givenMultipleRides_WhenInvoiceGenerator_ShouldReturnAverageFare() {
+        Ride[] rides = {
+                new Ride(2.0, 5),
+                new Ride(4.0, 10),
+                new Ride(2.0, 10)
+        };
+        InvoiceSummary summary = calculateFare.calculateTotalFare(rides);
+        Assert.assertEquals(35, summary.averageFare,0.0);
     }
 }
